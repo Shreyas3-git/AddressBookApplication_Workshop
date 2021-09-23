@@ -6,23 +6,19 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.bridgelabz.addressbook.dto.AddressBookDTO;
+import com.bridgelabz.addressbook.dto.ResponseDTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class AddressBookEntity 
 {
 	private int id;
 	private String name;
-	private String address;
-	
-	public AddressBookEntity(AddressBookDTO dto) 
-	{
-		this.name = dto.getName();
-		this.address = dto.getAddress();
-	}
-	
+	private String address;	
 	
 }
