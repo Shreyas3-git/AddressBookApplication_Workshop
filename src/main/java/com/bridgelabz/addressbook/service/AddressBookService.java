@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.addressbook.entity.AddressBookEntity;
+import com.bridgelabz.addressbook.exception.InputNotAccepted;
+import com.bridgelabz.addressbook.exception.NotFoundException;
 
 @Service
 public class AddressBookService implements IAddressBookService
@@ -19,6 +21,11 @@ public class AddressBookService implements IAddressBookService
 	@Override
 	public List<AddressBookEntity> retriveAllData() 
 	{
+		long numberOfRecord = contactList.size();
+		if (numberOfRecord == 0)
+		{
+			throw new NotFoundException("ContactList is Empty NoSuchElement");
+		}
 		return contactList;
 	}
 
@@ -26,18 +33,30 @@ public class AddressBookService implements IAddressBookService
 	public AddressBookEntity retriveById(int id) 
 	{
 		AddressBookEntity entity = new AddressBookEntity();
-		if (id == entity.getId()) 
+		for(int i = 0; i < contactList.size(); i++)
 		{
-			return contactList.stream().findFirst().get();
+			if (id == entity.getId()) 
+			{
+				return contactList.stream().findFirst().get();
+			}
+
 		}
-		return null;
+		throw new NotFoundException("ContactList is Empty NoSuchElement");
+
 	}
 
 	@Override
 	public AddressBookEntity insertRecord(AddressBookEntity entity) 
 	{
-		contactList.add(entity);
-		return null;
+		if (contactList.contains(entity)) 
+		{
+			throw new InputNotAccepted("contact is already present in contactList");
+		}
+		else
+		{
+			contactList.add(entity);
+			return null;
+		}
 	}
 
 	@Override
@@ -51,6 +70,10 @@ public class AddressBookService implements IAddressBookService
 				contactList.set(i, entity);
 				return null;
 			}
+			else
+			{
+				throw new InputNotAccepted("contact Id is not present in addressbook contactList");
+			}
 		}
 		return null;
 	}
@@ -58,8 +81,16 @@ public class AddressBookService implements IAddressBookService
 	@Override
 	public AddressBookEntity deleteById(int id) 
 	{
-		contactList.remove(id);
-		return null;
+		AddressBookEntity entity = null;
+		if (entity.getId() == id) 
+		{
+			contactList.remove(id);
+			return null;
+		}
+		else 
+		{
+			throw new NotFoundException("contact Id is not found for deletion in addressbook contactList ");
+		}
 	}
 
 }

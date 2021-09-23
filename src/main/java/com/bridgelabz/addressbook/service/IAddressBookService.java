@@ -11,5 +11,4 @@ public interface IAddressBookService
 	public AddressBookEntity insertRecord(AddressBookEntity entity);
 	public AddressBookEntity updateRecord(AddressBookEntity entity,int id);
 	public AddressBookEntity deleteById(int id);
-
 }
