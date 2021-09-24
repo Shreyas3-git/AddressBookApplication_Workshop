@@ -1,7 +1,5 @@
 package com.bridgelabz.addressbook.dto;
 
-import com.bridgelabz.addressbook.entity.AddressBookEntity;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddressBookDTO 
 {
-	public String name;
+	public String firstName;
+	public String lastName;
 	public String address;
+	public String city;
+	public int zip;
+	public String state;
+	public String phone;
+
 }

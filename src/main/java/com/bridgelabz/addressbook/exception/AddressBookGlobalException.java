@@ -44,7 +44,11 @@ public class AddressBookGlobalException
 		{
 			ResponseDTO dto = new ResponseDTO("Error while updating user data",exception.getMessage());
 			return new ResponseEntity<ResponseDTO>(dto,HttpStatus.NOT_ACCEPTABLE);
-
+		}
+		else if(exception instanceof EmptyAddressBookException)
+		{
+			ResponseDTO dto = new ResponseDTO("Error while retriving all user data",exception.getMessage());
+			return new ResponseEntity<ResponseDTO>(dto,HttpStatus.NOT_ACCEPTABLE);
 		}
 		return null;
 	}

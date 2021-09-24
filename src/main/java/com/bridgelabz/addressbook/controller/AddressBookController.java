@@ -27,8 +27,8 @@ import com.bridgelabz.addressbook.service.IAddressBookService;
 import lombok.extern.slf4j.Slf4j;
 
 
-@RestController
 @Slf4j
+@RestController
 public class AddressBookController 
 {
 	@Autowired
@@ -37,113 +37,45 @@ public class AddressBookController
 	@GetMapping(value = "/retrive")
 	public ResponseEntity<ResponseDTO> getAllDetails()
 	{	
-//		try 
-//		{
-			List<AddressBookEntity> entity = addressbookService.retriveAllData();
-			ResponseDTO dto = new ResponseDTO("All Data retrive successfully (:",entity);
-			return new ResponseEntity(dto,HttpStatus.OK);
-//		}
-//		catch(EmptyAddressBookException exception)
-//		{
-//			ResponseDTO dto = new ResponseDTO("Error while processing empty AddressBook contactList",null);
-//			return new ResponseEntity(dto,HttpStatus.NOT_FOUND); 
-//		}
-//		catch(Exception exception)
-//		{
-//			ResponseDTO dto = new ResponseDTO("Error while processing request",null);
-//			return new ResponseEntity(dto,HttpStatus.BAD_REQUEST); 
-//		}
-
-		
+		log.info("retrive all Data here");
+		List<AddressBookEntity> entity = addressbookService.retriveAllData();
+		ResponseDTO dto = new ResponseDTO("All Data retrive successfully (:",entity);
+		return new ResponseEntity(dto,HttpStatus.OK);
 	}
 	
 
 	@GetMapping(value = "/retrive/{id}")
 	public ResponseEntity<ResponseDTO> getDataById(@PathVariable int id)
 	{
-//		try 
-//		{
-			AddressBookEntity entity = addressbookService.retriveById(id);
-			ResponseDTO dto = new ResponseDTO(" Data retrive successfully for id (: "+id,entity);
-			return new ResponseEntity(dto,HttpStatus.OK);
-//		}
-//		catch(NotFoundException exception)
-//		{
-//			ResponseDTO dto = new ResponseDTO("Contact not found NoSuchElement",null);
-//			return new ResponseEntity(dto,HttpStatus.NOT_FOUND); 
-//		}
-//		catch(Exception exception)
-//		{
-//			ResponseDTO dto = new ResponseDTO("Error while processing request",null);
-//			return new ResponseEntity(dto,HttpStatus.BAD_REQUEST); 
-//		}
-//
+		AddressBookEntity entity = addressbookService.retriveById(id);
+		ResponseDTO dto = new ResponseDTO(" Data retrive successfully for id (: "+id,entity);
+		return new ResponseEntity(dto,HttpStatus.OK);
 	}
 		
 	@PostMapping(value = "/insert")
-	public ResponseEntity<ResponseDTO> addRecord(@Valid @RequestBody AddressBookEntity addressbookEntity)
+	public ResponseEntity<ResponseDTO> addRecord(@Valid @RequestBody AddressBookDTO addressbookDTO)
 	{
-//		try
-//		{
-			AddressBookEntity entity = addressbookService.insertRecord(addressbookEntity);
-			ResponseDTO dto = new ResponseDTO(" Data inserted successfully (: ",entity);
-			return new ResponseEntity(dto,HttpStatus.OK);
-//		}
-//		catch(InputNotAccepted exception)
-//		{
-//			ResponseDTO dto = new ResponseDTO(" Error while processing userInput ",exception.getMessage());
-//			return new ResponseEntity(dto,HttpStatus.NOT_ACCEPTABLE);
-//		}
-//		catch(Exception exception)
-//		{
-//			ResponseDTO dto = new ResponseDTO("Error while processing request",null);
-//			return new ResponseEntity(dto,HttpStatus.BAD_REQUEST); 
-//		}
+		AddressBookEntity entity = addressbookService.insertRecord(addressbookDTO);
+		ResponseDTO dto = new ResponseDTO(" Data inserted successfully (: ",entity);
+		return new ResponseEntity(dto,HttpStatus.OK);
 
 	}
 	
 
 	@PutMapping(value = "/update/{id}")
-	public ResponseEntity<ResponseDTO> ModifyRecord(@Valid @RequestBody AddressBookEntity addressbookEntity,@PathVariable int id)
+	public ResponseEntity<ResponseDTO> ModifyRecord(@Valid @RequestBody AddressBookDTO addressbookDTO,@PathVariable int id)
 	{
-//		try 
-//		{
-			AddressBookEntity entity = addressbookService.updateRecord(addressbookEntity, id);
-			ResponseDTO dto = new ResponseDTO(" Data updated successfully for id (: ",entity);
-			return new ResponseEntity(dto,HttpStatus.OK);
-//		}
-//		catch(InputNotAccepted exception)
-//		{
-//			ResponseDTO dto = new ResponseDTO(" Error while processing userInput ",null);
-//			return new ResponseEntity(dto,HttpStatus.NOT_ACCEPTABLE);
-//		}
-//		catch(Exception exception)
-//		{
-//			ResponseDTO dto = new ResponseDTO("Error while processing request",null);
-//			return new ResponseEntity(dto,HttpStatus.BAD_REQUEST); 
-//		}
+		AddressBookEntity entity = addressbookService.updateRecord(addressbookDTO, id);
+		ResponseDTO dto = new ResponseDTO(" Data updated successfully for id (: ",entity);
+		return new ResponseEntity(dto,HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/delete/{id}")
 	public ResponseEntity<ResponseDTO> deleteById(@PathVariable int id)
 	{
-//		try
-//		{
-			AddressBookEntity entity = addressbookService.deleteById(id);
-			ResponseDTO dto = new ResponseDTO(" Data inserted successfully for id (: ",entity);
-			return new ResponseEntity(dto,HttpStatus.OK);
-//		}
-//		catch(NotFoundException exception)
-//		{
-//			ResponseDTO dto = new ResponseDTO("Contact not found NoSuchElement",null);
-//			return new ResponseEntity(dto,HttpStatus.NOT_FOUND); 
-//		}
-//		catch(Exception exception)
-//		{
-//			ResponseDTO dto = new ResponseDTO("Error while processing request",null);
-//			return new ResponseEntity(dto,HttpStatus.BAD_REQUEST); 
-//		}
-
+		AddressBookEntity entity = addressbookService.deleteById(id);
+		ResponseDTO dto = new ResponseDTO(" Data inserted successfully for id (: ",entity);
+		return new ResponseEntity(dto,HttpStatus.OK);
 	}
 	
 }

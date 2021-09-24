@@ -1,96 +1,79 @@
 package com.bridgelabz.addressbook.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
 
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bridgelabz.addressbook.dto.AddressBookDTO;
 import com.bridgelabz.addressbook.entity.AddressBookEntity;
+import com.bridgelabz.addressbook.exception.EmptyAddressBookException;
 import com.bridgelabz.addressbook.exception.InputNotAccepted;
 import com.bridgelabz.addressbook.exception.NotFoundException;
+import com.bridgelabz.addressbook.repository.IAdderssBookRepository;
 
 @Service
 public class AddressBookService implements IAddressBookService
 {
-	private List<AddressBookEntity> contactList = new ArrayList<>(Arrays.asList(
-					new AddressBookEntity(1,"Rakesh","Mumbai"),
-					new AddressBookEntity(2,"Suresh","Kolkata"),
-					new AddressBookEntity(3,"Viraj","Pune")));
+	@Autowired
+	private IAdderssBookRepository repository;
+	
 	@Override
 	public List<AddressBookEntity> retriveAllData() 
 	{
-		long numberOfRecord = contactList.size();
-		if (numberOfRecord == 0)
+		long numberOfContacts = repository.count();
+		if (numberOfContacts == 0)
 		{
-			throw new NotFoundException("ContactList is Empty NoSuchElement");
+			throw new EmptyAddressBookException("Record not found ,EmptyAddressBookException:");
 		}
-		return contactList;
+		else
+		{
+			return repository.findAll();
+		}
 	}
 
 	@Override
 	public AddressBookEntity retriveById(int id) 
 	{
-		AddressBookEntity entity = new AddressBookEntity();
-		for(int i = 0; i < contactList.size(); i++)
-		{
-			if (id == entity.getId()) 
-			{
-				return contactList.stream().findFirst().get();
-			}
-
-		}
-		throw new NotFoundException("ContactList is Empty NoSuchElement");
-
+		return repository.findById(id).orElseThrow(() -> new NotFoundException("Id Not found NoSuchElement"));
 	}
 
 	@Override
-	public AddressBookEntity insertRecord(AddressBookEntity entity) 
+	public AddressBookEntity insertRecord(AddressBookDTO dto) 
 	{
-		if (contactList.contains(entity)) 
+		AddressBookEntity entity = new AddressBookEntity(dto);
+		List<AddressBookEntity> contactList = repository.findAll();
+		if (contactList.contains(entity.getId())) 
 		{
-			throw new InputNotAccepted("contact is already present in contactList");
+			throw new InputNotAccepted("Id will already present in the list");
 		}
-		else
-		{
-			contactList.add(entity);
-			return null;
-		}
+		return repository.save(entity);
 	}
 
 	@Override
-	public AddressBookEntity updateRecord(AddressBookEntity entity,int id) 
+	public AddressBookEntity updateRecord(AddressBookDTO dto,int id) 
 	{
-		for(int i = 0; i < contactList.size(); i++)
+		AddressBookEntity entity = repository.findById(id).orElseThrow(() -> new NotFoundException("Id Not found NoSuchElement"));
+		
+		if (dto.getAddress().equals(null) || dto.getFirstName().equals(null) || dto.getLastName().equals(null)
+				 || dto.getPhone().isBlank() || dto.getState().equals(null) ) 
 		{
-			AddressBookEntity t = contactList.get(i);
-			if (t.getId() == id)
-			{
-				contactList.set(i, entity);
-				return null;
-			}
-			else
-			{
-				throw new InputNotAccepted("contact Id is not present in addressbook contactList");
-			}
+			throw new InputNotAccepted("Filed Should Not Empty Exception");
 		}
-		return null;
+		BeanUtils.copyProperties(dto, entity);
+		return repository.save(entity);
 	}
 
 	@Override
 	public AddressBookEntity deleteById(int id) 
 	{
-		AddressBookEntity entity = null;
-		if (entity.getId() == id) 
-		{
-			contactList.remove(id);
-			return null;
-		}
-		else 
-		{
-			throw new NotFoundException("contact Id is not found for deletion in addressbook contactList ");
-		}
+		AddressBookEntity entity = repository.findById(id).orElseThrow(() -> new NotFoundException("Id Not found NoSuchElement"));
+		repository.deleteById(id);
+		return null;
 	}
+
 
 }
