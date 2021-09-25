@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.addressbook.dto.AddressBookDTO;
+import com.bridgelabz.addressbook.dto.AddressBookPage;
 import com.bridgelabz.addressbook.dto.ResponseDTO;
 import com.bridgelabz.addressbook.entity.AddressBookEntity;
 import com.bridgelabz.addressbook.exception.EmptyAddressBookException;
@@ -35,12 +37,10 @@ public class AddressBookController
 	private IAddressBookService addressbookService;
 	
 	@GetMapping(value = "/retrive")
-	public ResponseEntity<ResponseDTO> getAllDetails()
+	public ResponseEntity<Page<AddressBookEntity>> getAllDetails(AddressBookPage adderssbookPage)
 	{	
 		log.info("retrive all Data here");
-		List<AddressBookEntity> entity = addressbookService.retriveAllData();
-		ResponseDTO dto = new ResponseDTO("All Data retrive successfully (:",entity);
-		return new ResponseEntity(dto,HttpStatus.OK);
+		return new ResponseEntity<>(addressbookService.retriveAllData(adderssbookPage),HttpStatus.ACCEPTED);
 	}
 	
 

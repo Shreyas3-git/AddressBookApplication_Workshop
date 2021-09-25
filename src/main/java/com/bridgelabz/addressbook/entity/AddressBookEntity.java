@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
 import com.bridgelabz.addressbook.dto.AddressBookDTO;
@@ -23,19 +24,19 @@ public class AddressBookEntity
 	@GeneratedValue()
 	private int id;
 	
-	@Pattern(regexp = "^[A-Z]{1}[a-z]{2,}$",message = " First name is not valid:")
+//	@Pattern(regexp = "^[A-Z]{1}[a-z]{2,}$",message = " First name is not valid:")
 	private String firstName;
 	
-	@Pattern(regexp = "^[A-Z]{1}[a-z]{2,}$",message = "Last name is not valid:")
+//	@Pattern(regexp = "^[A-Z]{1}[a-z]{2,}$",message = "Last name is not valid:")
 	private String lastName;
 	
-	@Pattern(regexp = "^[A-Z]{1}[a-z]{2,}$",message = "address is not valid:")
+//	@Pattern(regexp = "^[A-Z]{1}[a-z]*$",message = "address is not valid:")
 	private String address;
 
 	@Pattern(regexp = "^[A-Z]{1}[a-z]{2,}$",message = "city pattern is not valid:")
 	private String city;
 	
-	@Pattern(regexp = "^[1-9]{1}[0-9]{5}$",message = "zip pattern is not valid")
+//	@Min(value = 6,message = "zip would not be greater than 6 digit")
 	private int zip;
 	
 	@Pattern(regexp = "^[A-Z]{1}[a-z]{2,}$",message = "state pattern is not valid:")
